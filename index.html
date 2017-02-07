@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Teste de formulario</title>
+	<style>
+		input, label, select, button {
+			display: block;
+			float: left;
+			clear: both;
+		}
+		.error {
+			border: 2px solid red;
+		}
+	</style>
+</head>
+<body>
+	<form action="" novalidate>
+		<input type="text" class="inpt1" required>
+		<input type="text" class="inpt2" required>
+		<label for="inpt3">
+			label do inpt3<br>
+			<input type="text" id="inpt3" class="inpt3" required>
+		</label>
+		<label for="inpt8">
+			label do inpt8
+		</label>
+		<input type="text" class="inpt4" required>
+		<input type="text" class="inpt5" required>
+		<input type="text" class="inpt6" required>
+		<input type="text" class="inpt06">
+		<input type="text" class="inpt7" required>
+		<input type="text" id="inpt8" class="inpt8" required>
+		<label for="select-required">Select 01</label>
+		<select name="select-required" id="select-required" required="required">
+			<option value=""></option>
+			<option value="01">01</option>
+			<option value="02">02</option>
+			<option value="03">03</option>
+			<option value="04">04</option>
+			<option value="05">05</option>
+			<option value="06">06</option>
+		</select>
+		<label for="select-normal">Select AA</label>
+		<select name="select-normal" id="select-normal">
+			<option value=""></option>
+			<option value="aa">aa</option>
+			<option value="bb">bb</option>
+			<option value="cc">cc</option>
+			<option value="dd">dd</option>
+			<option value="ee">ee</option>
+			<option value="ff">ff</option>
+		</select>
+		<div style="position: absolute; top: 20px; left: 50%">
+			<br><br>
+			<button onclick="valida(event)" style="width: 200px; border: 4px solid green">Valida</button>
+		</div>
+	</form>
+	<script src="index.js"></script>
+	<script>
+		function valida(e) {
+			e.preventDefault();
+			formValidator._validateForm(document.getElementsByTagName('form')[0]);
+		}
+	</script>
+</body>
+</html>

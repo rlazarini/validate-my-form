@@ -1,0 +1,28 @@
+{
+  "name": "form-validator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:rlazarini/form-validator.git"
+  },
+  "author": [
+    { 
+      "name" : "Rafael Lazarini",
+      "github" : "https://github.com/rlazarini"
+    },
+    { 
+      "name" : "Henrique Matheus Pereira Aveiro",
+      "github" : "https://github.com/mpahenrique"
+    }
+  ],
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rlazarini/form-validator/issues"
+  },
+  "homepage": "https://github.com/rlazarini/form-validator#readme"
+}
