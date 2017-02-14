@@ -18,9 +18,8 @@ function init(){
             var input = collectionRequired[i]
             ,   label = '';
             !!input.id && (label = $byAttr('for', input.id, form));
-
             if (input.tagName.toLowerCase() === 'select') {
-                if (input.value == "") {
+                if (input.value === "") {
                     $addClass(input, 'error');
                 } else {
                     $removeClass(input, 'error');
@@ -39,8 +38,8 @@ function init(){
                 }
             } else if (radioCollection[input.name] === undefined) {
                 radioCollection[input.name] = [];
-                var inputFieldset       = (input.parentNode.parentNode.tagName.toLowerCase() === 'li') ? input.parentNode.parentNode.parentNode : input.parentNode.parentNode
-                ,   radiosFieldset      = $byAttr('name', input.name, inputFieldset)
+                var inputFieldset       = input.parentNode
+                ,   radiosFieldset      = $byAttr('name', input.name, form)
                 ,   hasChecked          = false
                 ,   qtdInputRequired    = 0;
 
@@ -52,9 +51,13 @@ function init(){
                 }
 
                 if (!hasChecked) {
-                    $addClass(inputFieldset, 'error');
+                    for(var j = 0, jlgt = radiosFieldset.length; j < jlgt; j++) {
+                        $addClass(radiosFieldset[j].parentNode, 'error');
+                    }
                 } else {
-                    $removeClass(inputFieldset, 'error');
+                    for(var j = 0, jlgt = radiosFieldset.length; j < jlgt; j++) {
+                        $removeClass(radiosFieldset[j].parentNode, 'error');
+                    }
                     validInputs += qtdInputRequired;
                 }
             }
@@ -64,25 +67,47 @@ function init(){
     }
 
     function _vIF(inputSelector) {
-        var inputType = inputSelector.getAttribute('type') || inputSelector.type;
+        var inputDataType   = inputSelector.getAttribute('data-type') || inputSelector.dataset.type
+        ,   inputType       = inputSelector.getAttribute('type') || inputSelector.type;
 
-        if (inputType === 'text' || inputType === 'password' || inputType === 'textarea') {
-            if (inputSelector.getAttribute('data-type') === 'name') {
-                return (new RegExp(/^\D+\s+\D+$/)).test(inputSelector.value);
-            } else {
-                return (inputSelector.value !== '' && inputSelector.value.replace(/ /g, '').length > 0) ? true : false;
-            }
-        } else if (inputType === 'email') {
+        if (inputType === 'email' || inputDataType === 'email') {
             return (new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)).test(inputSelector.value);
-        } else if (inputType === 'data') {
-            var recreateDate    =  inputSelector.value.split('/')
+        } else if (inputType === 'date' || inputDataType === 'date') {
+            var insertDate      =  inputSelector.value
+            ,   formatDate      =  insertDate.replace('-','/')
+            ,   recreateDate    =  formatDate.split('/')
             ,   data            =  new Date()
-            ,   insertDate      =  recreateDate[2] + '/' + recreateDate[1] + '/' + recreateDate[0]
             ,   dataAtual       =  data.getFullYear() + '/' + (data.getMonth()+1) + '/' + data.getDate()
-            ,   validateDate    =  (new Date(insertDate) >= new Date(dataAtual));
+            ,   format          =  (inputType === 'date') ? 'YYYYMMDD' : inputSelector.getAttribute('data-format') || inputSelector.dataset.format || 'YYYYMMDD'
+            ,   gtCurrentDate   =  inputSelector.getAttribute('data-gtCurrentDate') || inputSelector.dataset.gtCurrentDate || false
+            ,   validateDate    =  !gtCurrentDate;
 
-            ruleRegex = /(^(((0[1-9]|1[0-9]|2[0-8])[\/](0[1-9]|1[012]))|((29|30|31)[\/](0[13578]|1[02]))|((29|30)[\/](0[4,6,9]|11)))[\/](19|[2-9][0-9])\d\d$)|(^29[\/]02[\/](19|[2-9][0-9])(00|04|08|12|16|20|24|28|32|36|40|44|48|52|56|60|64|68|72|76|80|84|88|92|96)$)/;
-            return (new RegExp(ruleRegex).test(inputSelector.value) && validateDate);
+            if (format.toUpperCase().replace(/\/|-/g,'') === 'YYYYMMDD') {
+                if (gtCurrentDate) {
+                    validateDate = (new Date(formatDate) >= new Date(dataAtual));
+                }
+                ruleRegex = /^([0-9]{4}[-/]?((0[13-9]|1[012])[-/]?(0[1-9]|[12][0-9]|30)|(0[13578]|1[02])[-/]?31|02[-/]?(0[1-9]|1[0-9]|2[0-8]))|([0-9]{2}(([2468][048]|[02468][48])|[13579][26])|([13579][26]|[02468][048]|0[0-9]|1[0-6])00)[-/]?02[-/]?29)$/;
+            } else if (format.toUpperCase().replace(/\/|-/g,'') === 'DDMMYYYY') {
+                if (gtCurrentDate) {
+                    formatDate = recreateDate[2] + '/' + recreateDate[1] + '/' + recreateDate[0];
+                    validateDate = (new Date(formatDate) >= new Date(dataAtual));
+                }
+                ruleRegex = /^(((0[1-9]|[12][0-9]|30)[-/]?(0[13-9]|1[012])|31[-/]?(0[13578]|1[02])|(0[1-9]|1[0-9]|2[0-8])[-/]?02)[-/]?[0-9]{4}|29[-/]?02[-/]?([0-9]{2}(([2468][048]|[02468][48])|[13579][26])|([13579][26]|[02468][048]|0[0-9]|1[0-6])00))$/;
+            } else if (format.toUpperCase().replace(/\/|-/g,'') === 'MMDDYYYY') {
+                if (gtCurrentDate) {
+                    formatDate = recreateDate[2] + '/' + recreateDate[0] + '/' + recreateDate[1];
+                    validateDate = (new Date(formatDate) >= new Date(dataAtual));
+                }
+                ruleRegex = /^(((0[13-9]|1[012])[-/]?(0[1-9]|[12][0-9]|30)|(0[13578]|1[02])[-/]?31|02[-/]?(0[1-9]|1[0-9]|2[0-8]))[-/]?[0-9]{4}|02[-/]?29[-/]?([0-9]{2}(([2468][048]|[02468][48])|[13579][26])|([13579][26]|[02468][048]|0[0-9]|1[0-6])00))$/;
+            } else {
+                if (gtCurrentDate) {
+                    validateDate = (new Date(formatDate) >= new Date(dataAtual));
+                }
+                ruleRegex = /^\d{4}[-\/][01]\d[-\/][0-3]\d$/;
+            }
+
+            return (new RegExp(ruleRegex).test(insertDate) && validateDate);
+            
         } else if (
                 inputType === 'number' ||
                 inputType === 'cpf' ||
@@ -90,7 +115,8 @@ function init(){
                 inputType === 'cep' ||
                 inputType === 'mileage' ||
                 inputType === 'currency' ||
-                inputType === 'plate'
+                inputType === 'plate' ||
+                inputType === 'name'
             ) {
             var inputValue  = inputSelector.value
             ,   inputLength = inputValue.length
@@ -112,11 +138,17 @@ function init(){
                 ruleRegex = /^R\$ \S+/;
             } else if (inputType === 'plate') {
                 ruleRegex = /[a-zA-Z]{3}\-[0-9]{4}/g;
+            } else if (inputType === 'name') {
+                ruleRegex = /^\D+\s+\D+$/g;
             } else {
                 ruleRegex = /^\d+$/;
             }
 
             return ((inputLength >= minNumber && inputLength <= maxNumber) && (new RegExp(ruleRegex)).test(inputValue) && isValid);
+        } else if (inputType === 'checkbox') {
+            return inputSelector.checked;
+        } else if ((inputType === 'text' || inputType === 'password' || inputType === 'textarea') && !!inputDataType) {
+            return (inputSelector.value !== '' && inputSelector.value.replace(/ /g, '').length > 0) ? true : false;
         } else {
             return true;
         }
@@ -190,7 +222,7 @@ function init(){
 
             // Mascara inversa é só pra números, então remove qualquer ZERO no inicio
             // Funciona com conteúdo colado e inserido
-            while (inputValue[0] == '0') {
+            while (inputValue[0] === '0') {
                 inputValue = inputValue.substr(1);
             }
 
@@ -206,7 +238,7 @@ function init(){
                 // Ponteiro da máscara é sempre igual ao ponteiro do Input + a quantidade de
                 // caracteres especiais já utilizados.
                 mId = vId + mSeparatorCount;
-                if (mask[mId].match(literalPattern) == null) {
+                if (mask[mId].match(literalPattern) === null) {
                     // Se é encontrado um caracter especial na máscara, adicionamos o mesmo
                     // ao array de retorno e incrementamos o contador.
                     returnArray.push(mask[mId]);
@@ -233,22 +265,22 @@ function init(){
                 if (mId >= inputValue.length)
                     break;
 
-                if (mask[mId] == '0' && inputValue[vId].match(numberPattern) == null) {
+                if (mask[mId] === '0' && inputValue[vId].match(numberPattern) === null) {
                   break;
                 }
 
-                if (mask[mId] == 'A' && inputValue[vId].match(charPattern) == null && charType) {
+                if (mask[mId] === 'A' && inputValue[vId].match(charPattern) === null && charType) {
                   break;
                 }
 
-                while (mask[mId].match(literalPattern) == null) {
-                    if (inputValue[vId] == mask[mId])
+                while (mask[mId].match(literalPattern) === null) {
+                    if (inputValue[vId] === mask[mId])
                        break;
 
                     newValue += mask[mId++];
                 }
 
-                if (vId == mId) {
+                if (vId === mId) {
                     mId++;
                 }
                 
@@ -268,28 +300,28 @@ function init(){
         ,    Resto = 0
         ,    cpf   = cpf.replace(/[^0-9]/g,'');
 
-        if (cpf == "00000000000" ||
-            cpf == "11111111111" ||
-            cpf == "22222222222" ||
-            cpf == "33333333333" ||
-            cpf == "44444444444" ||
-            cpf == "55555555555" ||
-            cpf == "66666666666" ||
-            cpf == "77777777777" ||
-            cpf == "88888888888" ||
-            cpf == "99999999999") return false;
+        if (cpf === "00000000000" ||
+            cpf === "11111111111" ||
+            cpf === "22222222222" ||
+            cpf === "33333333333" ||
+            cpf === "44444444444" ||
+            cpf === "55555555555" ||
+            cpf === "66666666666" ||
+            cpf === "77777777777" ||
+            cpf === "88888888888" ||
+            cpf === "99999999999") return false;
 
         for (i=1; i<=9; i++) Soma = Soma + parseInt(cpf.substring(i-1, i)) * (11 - i);
         Resto = (Soma * 10) % 11;
 
-        if ((Resto == 10) || (Resto == 11))  Resto = 0;
+        if ((Resto === 10) || (Resto === 11))  Resto = 0;
         if (Resto != parseInt(cpf.substring(9, 10)) ) return false;
 
         Soma = 0;
         for (i = 1; i <= 10; i++) Soma = Soma + parseInt(cpf.substring(i-1, i)) * (12 - i);
         Resto = (Soma * 10) % 11;
 
-        if ((Resto == 10) || (Resto == 11))  Resto = 0;
+        if ((Resto === 10) || (Resto === 11))  Resto = 0;
         if (Resto != parseInt(cpf.substring(10, 11) ) ) return false;
         return true;
     }
@@ -305,7 +337,7 @@ function init(){
             found.push(cur);
         }
 
-        return found.length == 1 ? found[0] : (found.length == 0 ? false : found);
+        return found.length === 1 ? found[0] : (found.length === 0 ? false : found);
     }
 
     function $addClass(elms, c){

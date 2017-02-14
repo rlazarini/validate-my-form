@@ -9,6 +9,17 @@
 			float: left;
 			clear: both;
 		}
+		ul {
+			padding: 0;
+		}
+		li {
+			list-style: none;
+		}
+		div label,
+		div input,
+		li input {
+			float: none;
+		}
 		.error {
 			border: 2px solid red;
 		}
@@ -16,21 +27,61 @@
 </head>
 <body>
 	<form action="" novalidate>
-		<input type="text" class="inpt1" required>
-		<input type="text" class="inpt2" required>
+		<label for="">
+			Text normal (required)<br>
+			<input type="text" class="inpt1" required>
+		</label>
+		<label for="">
+			Text normal (required)<br>
+			<input type="text" class="inpt2" required>
+		</label>
 		<label for="inpt3">
-			label do inpt3<br>
-			<input type="text" id="inpt3" class="inpt3" required>
+			label do inpt3 - data-format(mmddyyyy) - Maior que data atual<br>
+			<input type="text" data-type="date" data-format="mmddyyyy" data-gtCurrentDate="true" id="inpt3" class="inpt3" required>
 		</label>
 		<label for="inpt8">
 			label do inpt8
 		</label>
-		<input type="text" class="inpt4" required>
-		<input type="text" class="inpt5" required>
-		<input type="text" class="inpt6" required>
-		<input type="text" class="inpt06">
-		<input type="text" class="inpt7" required>
-		<input type="text" id="inpt8" class="inpt8" required>
+		<label for="inpt4">
+			CPF:<br>
+			<input type="number" data-type="cpf" id="inpt4" class="inpt4" required>
+		</label>
+		<label for="inpt9">
+			Password:<br>
+			<input type="password" id="inpt9" class="inpt9" required>
+		</label>
+		<label for="">
+			Text normal (required)<br>
+			<input type="text" class="inpt5" required>
+		</label>
+		<label for="">
+			type=date (required)<br>
+			<input type="date" data-format="dd/mm/yyyy" class="inpt6" required>
+		</label>
+		<label for="">
+			Text - data-type(date) - data-format(mm/dd/yyyy) (required)<br>
+			<input type="text" data-type="date" data-format="mm/dd/yyyy" class="inpt12" required>
+		</label>
+		<label for="">
+			datetime-local - data-format(dd/mm/yyyy) (required)<br>
+			<input type="datetime-local" data-format="dd/mm/yyyy" class="inpt10" required>
+		</label>
+		<label for="">
+			week - data-format(dd/mm/yyyy) (required)<br>
+			<input type="week" data-format="dd/mm/yyyy" class="inpt11" required>
+		</label>
+		<label for="">
+			Text normal (NOT required)<br>
+			<input type="text" class="inpt06">
+		</label>
+		<label for="">
+			Text normal (required)<br>
+			<input type="text" class="inpt7" required>
+		</label>
+		<label for="">
+			Text normal (required)<br>
+			<input type="text" id="inpt8" class="inpt8" required>
+		</label>
 		<label for="select-required">Select 01</label>
 		<select name="select-required" id="select-required" required="required">
 			<option value=""></option>
@@ -51,9 +102,35 @@
 			<option value="ee">ee</option>
 			<option value="ff">ff</option>
 		</select>
-		<div style="position: absolute; top: 20px; left: 50%">
+		<label for="forCheck1">Check 1<input type="checkbox" id="forCheck1" value="1" name="forCheck1" required></label><br>
+		<label for="forCheck2">Check 2<input type="checkbox" id="forCheck2" value="1" name="forCheck2"></label><br>
+		<ul style="clear: both; width: 300px; background-color: lightgray">
+			<li><label for="radio1">Radio 1</label><input type="radio" id="radio1" name="radio0" required></li>
+			<li><label for="radio2">Radio 2</label><input type="radio" id="radio2" name="radio0" ></li>
+			<li><label for="radio3">Radio 3</label><input type="radio" id="radio3" name="radio0" ></li>
+			<li><label for="radio4">Radio 4</label><input type="radio" id="radio4" name="radio0" ></li>
+			<li><label for="radio5">Radio 5</label><input type="radio" id="radio5" name="radio0" required></li>
+			<li><label for="radio6">Radio 6</label><input type="radio" id="radio6" name="radio0" ></li>
+		</ul>
+		<div style="clear: both; width: 300px; margin-bottom: 20px; background-color: DarkGoldenRod">
+			<label for="xradio1">Radio 1</label><input type="radio" id="xradio1" name="xradio" ><br>
+			<label for="xradio2">Radio 2</label><input type="radio" id="xradio2" name="xradio" ><br>
+			<label for="xradio3">Radio 3</label><input type="radio" id="xradio3" name="xradio" ><br>
+			<label for="xradio4">Radio 4</label><input type="radio" id="xradio4" name="xradio" ><br>
+			<label for="xradio5">Radio 5</label><input type="radio" id="xradio5" name="xradio" ><br>
+			<label for="xradio6">Radio 6</label><input type="radio" id="xradio6" name="xradio" required><br>
+		</div>
+		<div style="clear: both; width: 300px; background-color: CadetBlue">
+			<label for="xradio1">Radio 1<input type="radio" id="xradio1" name="yradio" ><br></label>
+			<label for="xradio2">Radio 2<input type="radio" id="xradio2" name="yradio" ><br></label>
+			<label for="xradio3">Radio 3<input type="radio" id="xradio3" name="yradio" ><br></label>
+			<label for="xradio4">Radio 4<input type="radio" id="xradio4" name="yradio" ><br></label>
+			<label for="xradio5">Radio 5<input type="radio" id="xradio5" name="yradio" ><br></label>
+			<label for="xradio6">Radio 6<input type="radio" id="xradio6" name="yradio" required><br></label>
+		</div>
+		<div style="position: fixed; top: 8vh; left: 75vw">
 			<br><br>
-			<button onclick="valida(event)" style="width: 200px; border: 4px solid green">Valida</button>
+			<button onclick="valida(event)" style="width: 200px; height: 80px; border: 4px solid green">Valida</button>
 		</div>
 	</form>
 	<script src="index.js"></script>
