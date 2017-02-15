@@ -1,6 +1,10 @@
-# Form Validator
-A form validator using vanillaJS and create Masks to input fields
+# [Form Validator](https://www.npmjs.com/package/formvalidator)
+
+A form validator using vanillaJS
 
 ## Using Form Validator you can:
   - Validate a form;
-  - Create Masks to input forms;
+  - Using default validation rules;
+  - Create your own validation rules;
+
+  
