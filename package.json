@@ -1,5 +1,5 @@
 {
-  "name": "form-validator",
+  "name": "validate-my-form",
   "version": "1.0.0",
   "description": "A form validator to vanillaJS",
   "main": "index.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:rlazarini/form-validator.git"
+    "url": "git@github.com:rlazarini/validate-my-form.git"
   },
   "author": [
     { 
@@ -22,7 +22,7 @@
   ],
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/rlazarini/form-validator/issues"
+    "url": "https://github.com/rlazarini/validate-my-form/issues"
   },
-  "homepage": "https://github.com/rlazarini/form-validator#readme"
+  "homepage": "https://github.com/rlazarini/validate-my-form#readme"
 }
