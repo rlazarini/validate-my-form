@@ -27,6 +27,14 @@
 </head>
 <body>
 	<form action="" novalidate>
+		<label for="inpt13">
+			email - nova validacao (required)<br>
+			<input type="email" id="inpt13" class="inpt13" required>
+		</label>
+		<label for="inpt14">
+			inputMEU!!!! - numberNew (required)<br>
+			<input type="numberNew" id="inpt14" class="inpt14" required>
+		</label>
 		<label for="">
 			Text normal (required)<br>
 			<input type="text" class="inpt1" required>
@@ -44,7 +52,7 @@
 		</label>
 		<label for="inpt4">
 			CPF:<br>
-			<input type="number" data-type="cpf" id="inpt4" class="inpt4" required>
+			<input type="text" data-type="cpf" id="inpt4" class="inpt4" required>
 		</label>
 		<label for="inpt9">
 			Password:<br>
@@ -137,7 +145,14 @@
 	<script>
 		function valida(e) {
 			e.preventDefault();
-			formValidator._validateForm(document.getElementsByTagName('form')[0]);
+			var obj = {
+				'newType': 'Another regex',
+				'otherType': 'One more time',
+				'numberNew': /^\w+\s{1}\w+$/g,
+				'number': /^\d$/g,
+				'email': /^\w+$/g
+			}
+			formValidator._validateForm(document.getElementsByTagName('form')[0],obj);
 		}
 	</script>
 </body>

@@ -1,13 +1,13 @@
 'use strict';
 
 function init(){
-    function _vF(form) {
+    function _vF(form,obj) {
 
         var fullList             = $byAttr('required', '', form)
         ,   collectionRequired   = []
         ,   radioCollection      = {}
         ,   validInputs          = 0;
-
+        
         if (fullList.length !== undefined) {
             collectionRequired = collectionRequired.concat(fullList);
         } else if (fullList) {
@@ -26,7 +26,7 @@ function init(){
                     validInputs++;
                 }
             } else if (input.getAttribute('type') !== 'radio') {
-                if (!_vIF(input)) {
+                if (!_vIF(input,obj)) {
                     $removeClass(input, 'error');
                     label && $removeClass(label, 'error');
                     input.className += " error";
@@ -66,12 +66,15 @@ function init(){
         return (validInputs === collectionRequired.length)
     }
 
-    function _vIF(inputSelector) {
+    function _vIF(inputSelector,obj) {
         var inputDataType   = inputSelector.getAttribute('data-type') || inputSelector.dataset.type
-        ,   inputType       = inputSelector.getAttribute('type') || inputSelector.type;
+        ,   inputType       = inputSelector.getAttribute('type') || inputSelector.type
+        ,   ruleRegex       = ''
+        ,   objRegex        = obj[inputDataType] || obj[inputType];
 
         if (inputType === 'email' || inputDataType === 'email') {
-            return (new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)).test(inputSelector.value);
+            ruleRegex = (!objRegex) ? /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/ : objRegex;
+            return (new RegExp(ruleRegex)).test(inputSelector.value);
         } else if (inputType === 'date' || inputDataType === 'date') {
             var insertDate      =  inputSelector.value
             ,   formatDate      =  insertDate.replace('-','/')
@@ -107,50 +110,49 @@ function init(){
             }
 
             return (new RegExp(ruleRegex).test(insertDate) && validateDate);
-            
+
         } else if (
-                inputType === 'number' ||
-                inputType === 'cpf' ||
-                inputType === 'telefone' ||
-                inputType === 'cep' ||
-                inputType === 'mileage' ||
-                inputType === 'currency' ||
-                inputType === 'plate' ||
-                inputType === 'name'
-            ) {
+            inputDataType === 'number' ||
+            inputDataType === 'cpf' ||
+            inputDataType === 'telefone' ||
+            inputDataType === 'cep' ||
+            inputDataType === 'mileage' ||
+            inputDataType === 'currency' ||
+            inputDataType === 'plate' ||
+            inputDataType === 'name'
+        ) {
             var inputValue  = inputSelector.value
             ,   inputLength = inputValue.length
             ,   maxNumber   = inputSelector.max || 999999999
             ,   minNumber   = inputSelector.min || 0
-            ,   ruleRegex   = ''
             ,   isValid     = true;
-
-            if (inputType === 'telefone') {
-                ruleRegex = /^\([1-9]{2}\)\s?[0-9]{4,5}\-[0-9]{4}$/;
-            } else if (inputType === 'cpf') {
-                ruleRegex = /^[0-9]{3}\.[0-9]{3}\.[0-9]{3}\-[0-9]{2}$/;
+            
+            if (inputDataType === 'telefone') {
+                ruleRegex = (!objRegex) ? /^\([1-9]{2}\)\s?[0-9]{4,5}\-[0-9]{4}$/ : objRegex;
+            } else if (inputDataType === 'cpf') {
+                ruleRegex = (!objRegex) ? /^[0-9]{3}\.[0-9]{3}\.[0-9]{3}\-[0-9]{2}$/ : objRegex;
                 isValid = $CPFValidator(inputValue);
-            } else if (inputType === 'cep') {
-                ruleRegex = /^[0-9]{5}\-[0-9]{3}$/;
-            } else if (inputType === 'mileage') {
-                ruleRegex = /^\d{1,3}(\.\d{3})*$/;
-            } else if (inputType === 'currency') {
-                ruleRegex = /^R\$ \S+/;
-            } else if (inputType === 'plate') {
+            } else if (inputDataType === 'cep') {
+                ruleRegex = (!objRegex) ? /^[0-9]{5}\-[0-9]{3}$/ : objRegex;
+            } else if (inputDataType === 'mileage') {
+                ruleRegex = (!objRegex) ? /^\d{1,3}(\.\d{3})*$/ : objRegex;
+            } else if (inputDataType === 'currency') {
+                ruleRegex = (!objRegex) ? /^R\$ \S+/ : objRegex;
+            } else if (inputDataType === 'plate') {
                 ruleRegex = /[a-zA-Z]{3}\-[0-9]{4}/g;
-            } else if (inputType === 'name') {
-                ruleRegex = /^\D+\s+\D+$/g;
+            } else if (inputDataType === 'name') {
+                ruleRegex = (!objRegex) ? /^\D+\s+\D+$/g : objRegex;
             } else {
-                ruleRegex = /^\d+$/;
+                ruleRegex = (!objRegex) ? /^\d+$/ : objRegex;
             }
 
             return ((inputLength >= minNumber && inputLength <= maxNumber) && (new RegExp(ruleRegex)).test(inputValue) && isValid);
         } else if (inputType === 'checkbox') {
             return inputSelector.checked;
         } else if ((inputType === 'text' || inputType === 'password' || inputType === 'textarea') && !!inputDataType) {
-            return (inputSelector.value !== '' && inputSelector.value.replace(/ /g, '').length > 0) ? true : false;
+            return (!objRegex) ? ((inputSelector.value !== '' && inputSelector.value.replace(/ /g, '').length > 0) ? true : false) : objRegex;
         } else {
-            return true;
+            return (!objRegex) ? true : (new RegExp(objRegex)).test(inputSelector.value);
         }
     }
 
@@ -160,8 +162,8 @@ function init(){
         ,   mask2           =   ''
         ,   input           =   this
         ,   inputValue      =   this.value
-        ,   inputType       =   this.getAttribute('type')
-        ,   inputTelType    =   this.getAttribute('data-type')
+        ,   inputType       =   this.getAttribute('type') || this.type
+        ,   inputDataType   =   this.getAttribute('data-type') || this.dataset.type
         ,   charType        =   false
         ,   reverseMask     =   false
         ,   currencyMask    =   false
@@ -311,14 +313,14 @@ function init(){
             cpf === "88888888888" ||
             cpf === "99999999999") return false;
 
-        for (i=1; i<=9; i++) Soma = Soma + parseInt(cpf.substring(i-1, i)) * (11 - i);
+        for (var i=1; i<=9; i++) Soma = Soma + parseInt(cpf.substring(i-1, i)) * (11 - i);
         Resto = (Soma * 10) % 11;
 
         if ((Resto === 10) || (Resto === 11))  Resto = 0;
         if (Resto != parseInt(cpf.substring(9, 10)) ) return false;
 
         Soma = 0;
-        for (i = 1; i <= 10; i++) Soma = Soma + parseInt(cpf.substring(i-1, i)) * (12 - i);
+        for (var i = 1; i <= 10; i++) Soma = Soma + parseInt(cpf.substring(i-1, i)) * (12 - i);
         Resto = (Soma * 10) % 11;
 
         if ((Resto === 10) || (Resto === 11))  Resto = 0;
