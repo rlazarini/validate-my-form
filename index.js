@@ -1,7 +1,7 @@
 'use strict';
 
 function init(){
-    function _vF(form,obj) {
+    function _vMF(form,obj) {
 
         var fullList             = $byAttr('required', '', form)
         ,   collectionRequired   = []
@@ -67,10 +67,11 @@ function init(){
     }
 
     function _vIF(inputSelector,obj) {
-        var inputDataType   = inputSelector.getAttribute('data-type') || inputSelector.dataset.type
-        ,   inputType       = inputSelector.getAttribute('type') || inputSelector.type
+        var inputDataType   = inputSelector.getAttribute('data-type')     || inputSelector.dataset.type
+        ,   inputType       = inputSelector.getAttribute('type')          || inputSelector.type
+        ,   monetary        = inputSelector.getAttribute('data-monetary') || inputSelector.dataset.monetary  || 'R$'
         ,   ruleRegex       = ''
-        ,   objRegex        = obj[inputDataType] || obj[inputType];
+        ,   objRegex        = (obj) ? obj[inputDataType] || obj[inputType] : '';
 
         if (inputType === 'email' || inputDataType === 'email') {
             ruleRegex = (!objRegex) ? /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/ : objRegex;
@@ -114,8 +115,8 @@ function init(){
         } else if (
             inputDataType === 'number' ||
             inputDataType === 'cpf' ||
-            inputDataType === 'telefone' ||
-            inputDataType === 'cep' ||
+            inputDataType === 'phone' ||
+            inputDataType === 'zipcode' ||
             inputDataType === 'mileage' ||
             inputDataType === 'currency' ||
             inputDataType === 'plate' ||
@@ -127,21 +128,19 @@ function init(){
             ,   minNumber   = inputSelector.min || 0
             ,   isValid     = true;
             
-            if (inputDataType === 'telefone') {
+            if (inputDataType === 'phone') {
                 ruleRegex = (!objRegex) ? /^\([1-9]{2}\)\s?[0-9]{4,5}\-[0-9]{4}$/ : objRegex;
             } else if (inputDataType === 'cpf') {
                 ruleRegex = (!objRegex) ? /^[0-9]{3}\.[0-9]{3}\.[0-9]{3}\-[0-9]{2}$/ : objRegex;
                 isValid = $CPFValidator(inputValue);
-            } else if (inputDataType === 'cep') {
+            } else if (inputDataType === 'zipcode') {
                 ruleRegex = (!objRegex) ? /^[0-9]{5}\-[0-9]{3}$/ : objRegex;
-            } else if (inputDataType === 'mileage') {
-                ruleRegex = (!objRegex) ? /^\d{1,3}(\.\d{3})*$/ : objRegex;
             } else if (inputDataType === 'currency') {
-                ruleRegex = (!objRegex) ? /^R\$ \S+/ : objRegex;
+                ruleRegex = (!objRegex) ? '^' + monetary.replace('$','\\$') + ' \\d+([\\.|\\,]{1,}\\d{2,})*$' : objRegex;
             } else if (inputDataType === 'plate') {
                 ruleRegex = /[a-zA-Z]{3}\-[0-9]{4}/g;
             } else if (inputDataType === 'name') {
-                ruleRegex = (!objRegex) ? /^\D+\s+\D+$/g : objRegex;
+                ruleRegex = (!objRegex) ? /^((\s?[\w+áàãâäéèêëíìîïóòõôöúùûüçÁÀÃÂÄÉÈÊËÍÌÎÏÓÒÕÖÔÚÙÛÜÇ]+))+$/g : objRegex;
             } else {
                 ruleRegex = (!objRegex) ? /^\d+$/ : objRegex;
             }
@@ -149,10 +148,10 @@ function init(){
             return ((inputLength >= minNumber && inputLength <= maxNumber) && (new RegExp(ruleRegex)).test(inputValue) && isValid);
         } else if (inputType === 'checkbox') {
             return inputSelector.checked;
-        } else if ((inputType === 'text' || inputType === 'password' || inputType === 'textarea') && !!inputDataType) {
+        } else if ((inputType === 'text' || inputType === 'password' || inputType === 'textarea') && !inputDataType) {
             return (!objRegex) ? ((inputSelector.value !== '' && inputSelector.value.replace(/ /g, '').length > 0) ? true : false) : objRegex;
         } else {
-            return (!objRegex) ? true : (new RegExp(objRegex)).test(inputSelector.value);
+            return (!objRegex) ? false : (new RegExp(objRegex)).test(inputSelector.value);
         }
     }
 
@@ -229,8 +228,8 @@ function init(){
     }
 
     return {
-        _validateForm               : _vF,
-        _validateInputForm          : _vIF
+        _validateMyForm      : _vMF,
+        _validateInputForm   : _vIF
     }
 }
 
@@ -238,5 +237,5 @@ try {
     module.exports = init();
 } catch(err){
     // using like a library
-    window.formValidator = init();
+    window.validateMyForm = init();
 }

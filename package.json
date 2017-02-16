@@ -1,7 +1,7 @@
 {
   "name": "validate-my-form",
-  "version": "1.0.0",
-  "description": "A form validator to vanillaJS",
+  "version": "1.0.1",
+  "description": "A form validator to JS",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
