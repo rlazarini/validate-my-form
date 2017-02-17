@@ -1,5 +1,7 @@
 # [Validate my form](https://www.npmjs.com/package/validate-my-form)
 
+[![npm version](https://badge.fury.io/js/validate-my-form.svg)](https://badge.fury.io/js/validate-my-form)
+
 A form validator to validate input[required] fields;
 
 ## Using Validate my form you can:
