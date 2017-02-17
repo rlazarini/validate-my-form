@@ -113,13 +113,14 @@ function init(){
             return (new RegExp(ruleRegex).test(insertDate) && validateDate);
 
         } else if (
-            inputDataType === 'number' ||
-            inputDataType === 'cpf' ||
-            inputDataType === 'phone' ||
-            inputDataType === 'zipcode' ||
-            inputDataType === 'mileage' ||
+            inputType     === 'number'   ||
+            inputDataType === 'number'   ||
+            inputDataType === 'cpf'      ||
+            inputDataType === 'phone'    ||
+            inputDataType === 'zipcode'  ||
+            inputDataType === 'mileage'  ||
             inputDataType === 'currency' ||
-            inputDataType === 'plate' ||
+            inputDataType === 'plate'    ||
             inputDataType === 'name'
         ) {
             var inputValue  = inputSelector.value

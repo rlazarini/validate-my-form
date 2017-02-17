@@ -34,7 +34,7 @@ validateMyForm._validateMyForm(form);
 
 #### Examples
 ###### Basic Usage
-```html
+```HTML
 <body>
 	<form action="" id="form" novalidate>
 		<input type="text">
@@ -54,10 +54,10 @@ validateMyForm._validateMyForm(form);
 		}
 	</script>
 </body>
-``` 
+```
 
 ###### Create and validating a new type
-```html
+```HTML
 <body>
 	<form action="" id="form" novalidate>
 		<input type="textwiththreespaces" required="required">
@@ -75,12 +75,12 @@ validateMyForm._validateMyForm(form);
 		}
 	</script>
 </body>
-``` 
+```
 
 ###### Send a validate using attribute data-type
 > In this method, the input don't lose your properties. data-type="name" validate input[text] with rule text{space}text. You can create your own data-type and pass a object to validate then.
 
-```html
+```HTML
 <body>
 	<form action="" id="form" novalidate>
 		<input type="text" data-type="name" required="required">
@@ -99,14 +99,27 @@ validateMyForm._validateMyForm(form);
 		}
 	</script>
 </body>
-``` 
+```
 > Default Options to data-type
 
 ```sh
-	- number  	## Validate a field with only numbers
-	- cpf		## Validate a Brazil document
-	- phone		## Validate a Brazilian phone number
-	- zipcode	## Validate a Brazilian zipcode address
-	- currency	## Validate a monetary value. By default, using R$, but you can pass a monetary symbol with attribute data-monetary (see more above)
-	- name		## Validate a name, basically, they need two block of words: Like John Doe
+number  	## Validate a field with only numbers
+cpf			## Validate a Brazil document
+phone		## Validate a Brazilian phone number
+zipcode		## Validate a Brazilian zipcode address
+currency	## Validate a monetary value. By default, using R$, but you can pass a monetary symbol with attribute data-monetary (see more above)
+name		## Validate a name, basically, they need two block of words: Like John Doe
+```
+ 
+> The input\[date\] (or data-type[date], if you wish), has 2 another attributes you can use:
+
+```sh
+data-format  		## Pass the format of your date, by default use international date format (YYYYMMDD). Other options: DDMMYYYY; MMDDYYYY
+data-gtCurrentDate	## Pass a boolean if you want the validated date to be greater than or equal to the current date
+```
+ 
+> The data-type\[currency\], has 1 attribute you can use:
+
+```sh
+data-monetary		## You can pass a monetary symbol to your validation, by default: R$
 ```
