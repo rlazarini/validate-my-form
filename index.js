@@ -135,7 +135,7 @@ function init(){
                 ruleRegex = (!objRegex) ? /^\([1-9]{2}\)\s?[0-9]{4,5}\-[0-9]{4}$/ : objRegex;
             } else if (inputDataType === 'cpf') {
                 ruleRegex = (!objRegex) ? /^[0-9]{3}\.[0-9]{3}\.[0-9]{3}\-[0-9]{2}$/ : objRegex;
-                isValid = $CPFValidator(inputValue);
+                isValid = (!objRegex) ? $CPFValidator(inputValue) : true;
             } else if (inputDataType === 'zipcode') {
                 ruleRegex = (!objRegex) ? /^[0-9]{5}\-[0-9]{3}$/ : objRegex;
             } else if (inputDataType === 'currency') {
@@ -144,9 +144,9 @@ function init(){
                 ruleRegex = /[a-zA-Z]{3}\-[0-9]{4}/g;
             } else if (inputDataType === 'name') {
                 ruleRegex = (!objRegex) ? /^((\s?[\w+áàãâäéèêëíìîïóòõôöúùûüçÁÀÃÂÄÉÈÊËÍÌÎÏÓÒÕÖÔÚÙÛÜÇ]+))+$/g : objRegex;
-            } else if (inputType === 'creditcard') {
-                ruleRegex = (!objRegex) ? /^[0-9]{4}[0-9]{4}[0-9]{4}[0-9]{4}$/g : objRegex;
-            } else if (inputType === 'creditcardid') {
+            } else if (inputDataType === 'creditcard') {
+                ruleRegex = (!objRegex) ? /^[0-9]{4}\s?[0-9]{4}\s?[0-9]{4}\s?[0-9]{4}$/g : objRegex;
+            } else if (inputDataType === 'creditcardid') {
                 ruleRegex = (!objRegex) ? /^[0-9]{3}$/g : objRegex;
             } else {
                 ruleRegex = (!objRegex) ? /^\d+$/ : objRegex;
@@ -176,7 +176,8 @@ function init(){
             cpf === "66666666666" ||
             cpf === "77777777777" ||
             cpf === "88888888888" ||
-            cpf === "99999999999") return false;
+            cpf === "99999999999" ||
+            cpf === "12345678909") return false;
 
         for (var i=1; i<=9; i++) Soma = Soma + parseInt(cpf.substring(i-1, i)) * (11 - i);
         Resto = (Soma * 10) % 11;
