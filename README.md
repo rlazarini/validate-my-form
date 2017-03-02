@@ -111,6 +111,8 @@ phone		## Validate a Brazilian phone number
 zipcode		## Validate a Brazilian zipcode address
 currency	## Validate a monetary value. By default, using R$, but you can pass a monetary symbol with attribute data-monetary (see more above)
 name		## Validate a name, basically, they need two block of words: Like John Doe
+creditcard	## Validate a Credit Card number with 16 digits with or without spaces
+cvv			## Validate a Credit Card CVV number with 3 digits
 ```
  
 > The input\[date\] (or data-type[date], if you wish), has 2 another attributes you can use:

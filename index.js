@@ -122,7 +122,7 @@ function init(){
             inputDataType === 'currency'        ||
             inputDataType === 'plate'           ||
             inputDataType === 'creditcard'      ||
-            inputDataType === 'creditcardid'    ||
+            inputDataType === 'cvv'             ||
             inputDataType === 'name'
         ) {
             var inputValue  = inputSelector.value
@@ -146,7 +146,7 @@ function init(){
                 ruleRegex = (!objRegex) ? /^((\s?[\w+áàãâäéèêëíìîïóòõôöúùûüçÁÀÃÂÄÉÈÊËÍÌÎÏÓÒÕÖÔÚÙÛÜÇ]+))+$/g : objRegex;
             } else if (inputDataType === 'creditcard') {
                 ruleRegex = (!objRegex) ? /^[0-9]{4}\s?[0-9]{4}\s?[0-9]{4}\s?[0-9]{4}$/g : objRegex;
-            } else if (inputDataType === 'creditcardid') {
+            } else if (inputDataType === 'cvv') {
                 ruleRegex = (!objRegex) ? /^[0-9]{3}$/g : objRegex;
             } else {
                 ruleRegex = (!objRegex) ? /^\d+$/ : objRegex;
