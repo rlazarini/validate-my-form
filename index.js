@@ -7,7 +7,7 @@ function init(){
         ,   collectionRequired   = []
         ,   radioCollection      = {}
         ,   validInputs          = 0;
-        
+
         if (fullList.length !== undefined) {
             collectionRequired = collectionRequired.concat(fullList);
         } else if (fullList) {
@@ -113,14 +113,16 @@ function init(){
             return (new RegExp(ruleRegex).test(insertDate) && validateDate);
 
         } else if (
-            inputType     === 'number'   ||
-            inputDataType === 'number'   ||
-            inputDataType === 'cpf'      ||
-            inputDataType === 'phone'    ||
-            inputDataType === 'zipcode'  ||
-            inputDataType === 'mileage'  ||
-            inputDataType === 'currency' ||
-            inputDataType === 'plate'    ||
+            inputType     === 'number'          ||
+            inputDataType === 'number'          ||
+            inputDataType === 'cpf'             ||
+            inputDataType === 'phone'           ||
+            inputDataType === 'zipcode'         ||
+            inputDataType === 'mileage'         ||
+            inputDataType === 'currency'        ||
+            inputDataType === 'plate'           ||
+            inputDataType === 'creditcard'      ||
+            inputDataType === 'creditcardid'    ||
             inputDataType === 'name'
         ) {
             var inputValue  = inputSelector.value
@@ -128,7 +130,7 @@ function init(){
             ,   maxNumber   = inputSelector.max || 999999999
             ,   minNumber   = inputSelector.min || 0
             ,   isValid     = true;
-            
+
             if (inputDataType === 'phone') {
                 ruleRegex = (!objRegex) ? /^\([1-9]{2}\)\s?[0-9]{4,5}\-[0-9]{4}$/ : objRegex;
             } else if (inputDataType === 'cpf') {
@@ -142,6 +144,10 @@ function init(){
                 ruleRegex = /[a-zA-Z]{3}\-[0-9]{4}/g;
             } else if (inputDataType === 'name') {
                 ruleRegex = (!objRegex) ? /^((\s?[\w+áàãâäéèêëíìîïóòõôöúùûüçÁÀÃÂÄÉÈÊËÍÌÎÏÓÒÕÖÔÚÙÛÜÇ]+))+$/g : objRegex;
+            } else if (inputType === 'creditcard') {
+                ruleRegex = (!objRegex) ? /^[0-9]{4}[0-9]{4}[0-9]{4}[0-9]{4}$/g : objRegex;
+            } else if (inputType === 'creditcardid') {
+                ruleRegex = (!objRegex) ? /^[0-9]{3}$/g : objRegex;
             } else {
                 ruleRegex = (!objRegex) ? /^\d+$/ : objRegex;
             }
