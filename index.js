@@ -83,7 +83,7 @@ function init(){
             ,   data            =  new Date()
             ,   dataAtual       =  data.getFullYear() + '/' + (data.getMonth()+1) + '/' + data.getDate()
             ,   format          =  (inputType === 'date') ? 'YYYYMMDD' : inputSelector.getAttribute('data-format') || inputSelector.dataset.format || 'YYYYMMDD'
-            ,   gtCurrentDate   =  inputSelector.getAttribute('data-gtCurrentDate') || inputSelector.dataset.gtCurrentDate || false
+            ,   gtCurrentDate   =  inputSelector.hasAttribute('data-gtCurrentDate') || false
             ,   validateDate    =  !gtCurrentDate;
 
             if (format.toUpperCase().replace(/\/|-/g,'') === 'YYYYMMDD') {
