@@ -1,0 +1,15 @@
+{
+  "name": "validate-my-form",
+  "description": "A form validator to JS",
+  "main": "index.js",
+  "authors": [
+    "Rafael Lazarini"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "validate",
+    "form",
+    "vanillajs"
+  ],
+  "homepage": "https://github.com/rlazarini/validate-my-form"
+}
